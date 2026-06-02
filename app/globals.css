@@ -133,6 +133,109 @@ h4,
   }
 }
 
+/* ===== Loading overlay: radar pulse + status text ===== */
+.radar-ring {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 9999px;
+  border: 2px solid var(--green);
+  opacity: 0;
+  animation: radarPulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes radarPulse {
+  0% {
+    transform: scale(0.25);
+    opacity: 0.9;
+  }
+  70% {
+    opacity: 0.12;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+.loading-msg {
+  display: inline-block;
+  animation: msgFade 0.5s ease both;
+}
+
+@keyframes msgFade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Landing: on-load staggered reveal (hero) ===== */
+.reveal-load {
+  opacity: 0;
+  animation: revealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Global financial disclaimer ===== */
+.disclaimer {
+  background-color: #111811;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 32px 20px;
+}
+html.light .disclaimer {
+  background-color: #e9efe9;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+.disclaimer-label {
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 12px;
+  font-weight: 700;
+}
+.disclaimer-text {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #6b9478;
+  max-width: 700px;
+  margin: 12px auto 0;
+}
+html.light .disclaimer-text {
+  color: #4a6a55;
+}
+
+/* ===== Respect reduced-motion: disable all the above motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-load {
+    opacity: 1;
+    animation: none;
+  }
+  .loading-msg {
+    animation: none;
+  }
+  .radar-ring {
+    animation-duration: 3.5s;
+  }
+  * {
+    scroll-behavior: auto !important;
+  }
+}
+
 ::selection {
   background: var(--green);
   color: #04130c;

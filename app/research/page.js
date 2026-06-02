@@ -25,6 +25,8 @@ export default function ResearchPage() {
   const [horizon, setHorizon] = useState('mid');
   const [geography, setGeography] = useState('global');
   const [loading, setLoading] = useState(false);
+  const [complete, setComplete] = useState(false);
+  const [resultId, setResultId] = useState(null);
   const [error, setError] = useState('');
 
   const selectedSector = SECTORS.find((s) => s.id === sectorId);
@@ -45,6 +47,8 @@ export default function ResearchPage() {
   async function handleGenerate() {
     if (!ready || loading) return;
     setError('');
+    setComplete(false);
+    setResultId(null);
     setLoading(true);
     try {
       const res = await fetch('/api/research', {
@@ -66,7 +70,11 @@ export default function ResearchPage() {
       }
 
       const data = await res.json();
-      router.push(`/result/${data.id}`);
+      // Hand the id to the overlay; it fills the bar to 100%, fades out, then
+      // calls onDone to navigate. Keeps the loading animation on screen until
+      // the result page is ready.
+      setResultId(data.id);
+      setComplete(true);
     } catch (e) {
       setLoading(false);
       setError('Network error. Please try again.');
@@ -76,7 +84,12 @@ export default function ResearchPage() {
   return (
     <>
       <Navbar />
-      {loading && <LoadingOverlay />}
+      {loading && (
+        <LoadingOverlay
+          complete={complete}
+          onDone={() => resultId && router.push(`/result/${resultId}`)}
+        />
+      )}
 
       <main className="mx-auto max-w-4xl px-5 pb-40 pt-10">
         <h1 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">

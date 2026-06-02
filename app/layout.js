@@ -1,5 +1,6 @@
 import { Syne, DM_Sans } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
+import Disclaimer from '@/components/Disclaimer';
 import './globals.css';
 
 const syne = Syne({
@@ -32,7 +33,10 @@ export default function RootLayout({ children }) {
         <head>
           <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         </head>
-        <body className="min-h-screen bg-bg text-ink">{children}</body>
+        <body className="flex min-h-screen flex-col bg-bg text-ink">
+          <div className="flex-1">{children}</div>
+          <Disclaimer />
+        </body>
       </html>
     </ClerkProvider>
   );
